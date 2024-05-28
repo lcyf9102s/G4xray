@@ -6,8 +6,8 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger = new G4GenericMessenger(this, "/detector/", "Detector hh");
     fMessenger->DeclareProperty("nCol", nCols, "Number of columns");
     fMessenger->DeclareProperty("nRows", nRows, "Number of rows");
-    nCols = 500;
-    nRows = 500;
+    nCols = 100;
+    nRows = 100;
     DefineMaterials();
 
 }
@@ -26,6 +26,8 @@ void MyDetectorConstruction::DefineMaterials()
     H2O = new G4Material("H2O", 1.000*g/cm3, 2);
     H2O->AddElement(nist->FindOrBuildElement("H"), 2);
     H2O->AddElement(nist->FindOrBuildElement("O"), 1);
+
+    Air_0 = nist->FindOrBuildMaterial("G4_AIR");
 
     C = nist->FindOrBuildElement("C");
 
@@ -71,6 +73,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     // 探测器的logical空间
     solidDetector = new G4Box("solidDetector", x_world/nRows, y_world/nCols, 0.01*m); // solid detector
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
+
+    fScoringVolume = logicDetector;
     // 探测器阵列构建，使用for循环，构建一个100x100的探测器阵列，并给每一个探测器单元编号
     for(G4int i = 0; i < nRows; i++)
     {
