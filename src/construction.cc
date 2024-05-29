@@ -27,6 +27,13 @@ void MyDetectorConstruction::DefineMaterials()
     H2O->AddElement(nist->FindOrBuildElement("H"), 2);
     H2O->AddElement(nist->FindOrBuildElement("O"), 1);
 
+    NaI = new G4Material("NaI", 3.67*g/cm3, 2);
+    NaI->AddElement(nist->FindOrBuildElement("Na"), 1);
+    NaI->AddElement(nist->FindOrBuildElement("I"), 1);
+
+    HPGe = nist->FindOrBuildMaterial("G4_Ge");
+
+
     Air_0 = nist->FindOrBuildMaterial("G4_AIR");
 
     C = nist->FindOrBuildElement("C");
@@ -68,13 +75,17 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     logicRadiator = new G4LogicalVolume(solidRadiator, H2O, "logicRadiator"); // logical  radiator
     physRadiator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.38*m), logicRadiator, "physRadiator", logicWorld, false, 0, true); //  physical radiator
 
+    solidScintillator = new G4Tubs("solidScintillator", 10*cm, 20*cm, 30*cm, 0*deg, 360*deg);
+    logicScintillator = new G4LogicalVolume(solidScintillator, HPGe, "logicScintillator");
+    physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicScintillator, "physScintillator", logicWorld, false, 0, true);
+
     // 探测器构建
     // 先定义solid空间，由于之后定义的灵敏体积要外部访问探测器的logical空间，因此需要在头文件中MyDetectorConstruction类中定义
     // 探测器的logical空间
     solidDetector = new G4Box("solidDetector", x_world/nRows, y_world/nCols, 0.01*m); // solid detector
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
 
-    fScoringVolume = logicDetector;
+    fScoringVolume = logicScintillator;
     // 探测器阵列构建，使用for循环，构建一个100x100的探测器阵列，并给每一个探测器单元编号
     for(G4int i = 0; i < nRows; i++)
     {

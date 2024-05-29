@@ -11,6 +11,7 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "detector.hh"
+#include "G4Tubs.hh"
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -26,11 +27,12 @@ private:
     virtual void ConstructSDandField();
 
     G4int nCols, nRows;
-    G4Material *SiO2, *H2O, *Aerogel, *worldMat, *Air_0;
-    G4Element *C;
+    G4Material *SiO2, *H2O, *Aerogel, *worldMat, *Air_0, *NaI, *HPGe;
+    G4Element *C, *Na, *I;
     G4Box *solidWorld, *solidRadiator, *solidDetector;
-    G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *fScoringVolume;
-    G4VPhysicalVolume *physWorld, *physRadiator, *physDetector;
+    G4Tubs *solidScintillator;
+    G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *logicScintillator, *fScoringVolume;
+    G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator;
 
     void DefineMaterials();
 
