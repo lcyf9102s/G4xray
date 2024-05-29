@@ -3,8 +3,10 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 project(CNH1x)
 
 find_package(Geant4 REQUIRED ui_all vis_all)
+find_package(ROOT REQUIRED)
 
 include(${Geant4_USE_FILE})
+include_directories(${ROOT_INCLUDE_DIRS})
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
@@ -19,6 +21,6 @@ file(COPY ${MACRO_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 
 
 add_executable(CNH1 CNH1.cc ${sources} ${include_headers})
-target_link_libraries(CNH1 ${Geant4_LIBRARIES})
+target_link_libraries(CNH1 ${Geant4_LIBRARIES} ${ROOT_LIBRARIES})
 
 add_custom_target(CNH1x DEPENDS CNH1)

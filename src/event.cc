@@ -23,4 +23,6 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     
     man->FillNtupleDColumn(4, fEdep);
     man->AddNtupleRow(0);
+    man->FillH1(0, fEdep);
+
 }

@@ -77,9 +77,9 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     logicRadiator = new G4LogicalVolume(solidRadiator, Air_0, "logicRadiator"); // logical  radiator
     physRadiator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.38*m), logicRadiator, "physRadiator", logicWorld, false, 0, true); //  physical radiator
 
-    solidScintillator = new G4Tubs("solidScintillator", 0.3*cm, 0.32*cm, 30*cm, 0*deg, 360*deg);
+    solidScintillator = new G4Tubs("solidScintillator", 0.*cm, 2.5*cm, 0.02*cm, 0*deg, 360*deg);
     logicScintillator = new G4LogicalVolume(solidScintillator, pips, "logicScintillator");
-    physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicScintillator, "physScintillator", logicWorld, false, 0, true);
+    physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.2*cm), logicScintillator, "physScintillator", logicWorld, false, 0, true);
 
     
     // 探测器构建
