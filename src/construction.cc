@@ -6,8 +6,8 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger = new G4GenericMessenger(this, "/detector/", "Detector hh");
     fMessenger->DeclareProperty("nCol", nCols, "Number of columns");
     fMessenger->DeclareProperty("nRows", nRows, "Number of rows");
-    nCols = 100;
-    nRows = 100;
+    nCols = 5;
+    nRows = 5;
     DefineMaterials();
 
 }
@@ -32,6 +32,8 @@ void MyDetectorConstruction::DefineMaterials()
     NaI->AddElement(nist->FindOrBuildElement("I"), 1);
 
     HPGe = nist->FindOrBuildMaterial("G4_Ge");
+
+    pips = nist->FindOrBuildMaterial("G4_Si");
 
 
     Air_0 = nist->FindOrBuildMaterial("G4_AIR");
@@ -72,13 +74,14 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, true); // physical world G4ThreeVector是中心点坐标
 
     solidRadiator = new G4Box("solidRadiator", 0.5*m, 0.5*m, 0.1*m); // solid radiator
-    logicRadiator = new G4LogicalVolume(solidRadiator, H2O, "logicRadiator"); // logical  radiator
+    logicRadiator = new G4LogicalVolume(solidRadiator, Air_0, "logicRadiator"); // logical  radiator
     physRadiator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.38*m), logicRadiator, "physRadiator", logicWorld, false, 0, true); //  physical radiator
 
-    solidScintillator = new G4Tubs("solidScintillator", 10*cm, 20*cm, 30*cm, 0*deg, 360*deg);
-    logicScintillator = new G4LogicalVolume(solidScintillator, HPGe, "logicScintillator");
+    solidScintillator = new G4Tubs("solidScintillator", 0.3*cm, 0.32*cm, 30*cm, 0*deg, 360*deg);
+    logicScintillator = new G4LogicalVolume(solidScintillator, pips, "logicScintillator");
     physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicScintillator, "physScintillator", logicWorld, false, 0, true);
 
+    
     // 探测器构建
     // 先定义solid空间，由于之后定义的灵敏体积要外部访问探测器的logical空间，因此需要在头文件中MyDetectorConstruction类中定义
     // 探测器的logical空间
@@ -91,7 +94,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     {
         for(G4int j = 0; j < nCols; j++)
         {
-            physDetector = new G4PVPlacement(0, G4ThreeVector(-(x_world)+(x_world/nRows)*(2*i+1), -(y_world)+(y_world/nCols)*(2*j+1), 0.49*m), logicDetector, "physDetector", logicWorld, false,  j+i*nRows, true);
+            physDetector = new G4PVPlacement(0, G4ThreeVector(-(x_world)+(x_world/nRows)*(2*i+1), -(y_world)+(y_world/nCols)*(2*j+1), 0.49*m), logicDetector, "physDetector", logicWorld, false,  j+i*nRows, false);
         }
     }
 

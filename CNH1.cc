@@ -8,6 +8,7 @@
 #include <construction.hh>
 #include "physics.hh"
 #include "action.hh"
+#include "G4HadronicParameters.hh"
 
 int main(int argc, char** argv)
 {
@@ -18,6 +19,7 @@ int main(int argc, char** argv)
 
 
     // runManager->Initialize();
+    G4HadronicParameters::Instance()->SetTimeThresholdForRadioactiveDecay( 1.0e+60*CLHEP::year );
 
     G4UIExecutive *ui = 0;
     if(argc == 1)

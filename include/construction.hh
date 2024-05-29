@@ -27,12 +27,12 @@ private:
     virtual void ConstructSDandField();
 
     G4int nCols, nRows;
-    G4Material *SiO2, *H2O, *Aerogel, *worldMat, *Air_0, *NaI, *HPGe;
+    G4Material *SiO2, *H2O, *Aerogel, *worldMat, *Air_0, *NaI, *HPGe, *pips;
     G4Element *C, *Na, *I;
     G4Box *solidWorld, *solidRadiator, *solidDetector;
-    G4Tubs *solidScintillator;
-    G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *logicScintillator, *fScoringVolume;
-    G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator;
+    G4Tubs *solidScintillator, *solidPIPS;
+    G4LogicalVolume *logicWorld, *logicRadiator, *logicDetector, *logicScintillator, *logicPIPS, *fScoringVolume;
+    G4VPhysicalVolume *physWorld, *physRadiator, *physDetector, *physScintillator, *physPIPS;
 
     void DefineMaterials();
 
